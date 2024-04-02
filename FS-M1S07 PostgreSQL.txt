@@ -1,0 +1,61 @@
+/** CREATE TABLE CURSO **/
+CREATE TABLE curso (
+id bigserial PRIMARY KEY,
+nome_curso varchar(255) NOT NULL,
+descricao varchar(255) NOT NULL,
+carga_horaria bigint NOT NULL
+);
+-------------------------------------------------------------
+/* CRIANDO/INSERINDO 3 CURSOS */
+INSERT INTO curso (nome_curso, descricao, carga_horaria)
+VALUES ('Engenharia Mecânica', 'Bacharel Engenharia Mecânica', 2700)
+
+INSERT INTO curso (nome_curso, descricao, carga_horaria)
+VALUES ('Engenharia Civil', 'Bacharel Engenharia Civil', 2500)
+
+INSERT INTO curso (nome_curso, descricao, carga_horaria)
+VALUES ('Engenharia Elétrica', 'Bacharel Engenharia Elétrica', 2800)
+-------------------------------------------------------------
+/** CREATE TABLE PROFESSOR **/
+CREATE TABLE professor (
+id bigserial PRIMARY KEY,
+nome varchar(255) NOT NULL,
+especialidade varchar(100) NOT NULL,
+curso_id bigint NOT NULL REFERENCES curso(id)
+);
+-------------------------------------------------------------
+/* CRIANDO/INSERINDO 5 PROFESSORES */
+INSERT INTO professor (nome, especialidade, curso_id)
+VALUES ('Lucas', 'Ciências Térmicas', 1)
+
+INSERT INTO professor (nome, especialidade, curso_id)
+VALUES ('Maria', 'Vibrações', 1)
+
+INSERT INTO professor (nome, especialidade, curso_id)
+VALUES ('Emilly', 'Elementos de Máquinas', 1)
+
+INSERT INTO professor (nome, especialidade, curso_id)
+VALUES ('Alexandre', 'Fundações', 2)
+
+INSERT INTO professor (nome, especialidade, curso_id)
+VALUES ('Daniel', 'Robótica', 3)
+-------------------------------------------------------------
+/* ADICIONANDO RESTRIÇÃO DE CHAVE ESTRANGEIRA */
+ALTER TABLE professor
+ADD CONSTRAINT fk_curso_id
+FOREIGN KEY (curso_id) REFERENCES curso(id);
+-------------------------------------------------------------
+/* VINCULANDO OS PROFESSORES DE ENGENHARIA MECÂNICA */
+UPDATE professor
+SET curso_id = 1
+WHERE nome IN('Lucas', 'Maria', 'Emilly');
+
+/* VINCULANDO OS PROFESSORES DE ENGENHARIA CIVIL */
+UPDATE professor
+SET curso_id = 2
+WHERE nome = 'Alexandre';
+
+/* VINCULANDO PROFESSORES DE ENGENHARIA ELÉTRICA */
+UPDATE professor
+SET curso_id = 3
+WHERE nome = 'Daniel';
